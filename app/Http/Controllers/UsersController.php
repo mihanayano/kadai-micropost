@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\User; // add
+use App\User; 
+use App\Micropost; 
+
 
 class UsersController extends Controller
 {
@@ -61,6 +63,46 @@ class UsersController extends Controller
         return view('users.followers', $data);
     }
     
+    public function favorites($id)
+    {
+        $user = User::find($id);
+        $favorites = $user->favorites()->paginate(10);
+
+        $data = [
+            'user' => $user,
+            'favorites' => $favorites,
+        ];
+
+        $data += $this->counts($user);
+
+        return view('users.favorites', $data);
+    }
+
+    public function favorited($id)
+    {
+        $user = User::find($id);
+        $favorited = $user->favorited()->paginate(10);
+
+        $data = [
+            'user' => $user,
+            'users' => $favorited,
+        ];
+
+        $data += $this->counts($user);
+
+        return view('users.favorited', $data);
+    }
     
+    public function store(Request $request, $id)
+    {
+        \Auth::user()->favorite($id);
+        return redirect()->back();
+    }
+
+    public function destroy($id)
+    {
+        \Auth::user()->unfavorite($id);
+        return redirect()->back();
+    }
     
 }

@@ -14,6 +14,7 @@
                 
             </div>
             <div>
+                 @include('user_favorite.favorite_button', ['user' => $user])
                 @if (Auth::user()->id == $micropost->user_id)
                      
                     {!! Form::open(['route' => ['microposts.destroy', $micropost->id], 'method' => 'delete']) !!}
@@ -21,11 +22,11 @@
                     {!! Form::close() !!}
                   
                 @endif
-                @include('user_favorite.favorite_button', ['user' => $user, 'micropost' => $micropost])
+              
             </div>
             
         </div>
     </li>
 @endforeach
 </ul>
-{!! $microposts->render() !!}
+{!! $microposts->render() !!}-->
